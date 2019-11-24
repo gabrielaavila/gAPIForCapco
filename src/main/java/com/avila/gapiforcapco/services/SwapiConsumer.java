@@ -1,8 +1,6 @@
 package com.avila.gapiforcapco.services;
 
-import com.avila.gapiforcapco.dtos.request.People;
-import com.avila.gapiforcapco.dtos.request.Person;
-import com.avila.gapiforcapco.dtos.request.ResourcesPaths;
+import com.avila.gapiforcapco.dtos.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -40,6 +38,45 @@ public class SwapiConsumer {
         }
         return allCharacters;
 
+    }
+
+    public HumansPeopleAndAvMass getAverageMassOfHumansCharacters() {
+        Specie humanSpecie = getSpecieByName("human");
+        List<PersonAndMass> humanPeople = getPeopleByUrl(humanSpecie.getPeopleUrl());
+        Double avMass = getAverageMass(humanPeople);
+
+        return new HumansPeopleAndAvMass(humanPeople, avMass.toString());
+    }
+
+    private Double getAverageMass(List<PersonAndMass> humanPeople) {
+        int sumMass = 0;
+
+        for (PersonAndMass person : humanPeople) {
+            sumMass =+ Integer.parseInt(person.getMass());
+        }
+
+        return (double) (sumMass / humanPeople.size());
+    }
+
+    private List<PersonAndMass> getPeopleByUrl(List<String> peopleUrls) {
+        List<PersonAndMass> people = new ArrayList<>();
+        HttpEntity<String> entity = new HttpEntity<>(getHeaders());
+        RestTemplate restTemplate = new RestTemplate();
+        PersonAndMass person;
+        for (String url : peopleUrls) {
+            person = restTemplate.exchange(url, HttpMethod.GET, entity, PersonAndMass.class).getBody();
+            people.add(person);
+        }
+
+        return people;
+    }
+
+    private Specie getSpecieByName(String name) {
+        String url = paths.getSpecies().substring(0, paths.getSpecies().length() - 1) + "?search=" + name;
+        HttpEntity<String> entity = new HttpEntity<>(getHeaders());
+        RestTemplate restTemplate = new RestTemplate();
+
+        return restTemplate.exchange(url, HttpMethod.GET, entity, Specie.class).getBody();
     }
 
     private ResourcesPaths getAllPaths(){

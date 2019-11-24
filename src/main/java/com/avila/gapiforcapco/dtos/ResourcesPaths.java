@@ -1,4 +1,4 @@
-package com.avila.gapiforcapco.dtos.request;
+package com.avila.gapiforcapco.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

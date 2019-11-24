@@ -1,7 +1,8 @@
 package com.avila.gapiforcapco.controllers;
 
-import com.avila.gapiforcapco.dtos.request.Person;
-import com.avila.gapiforcapco.dtos.request.ResourcesPaths;
+import com.avila.gapiforcapco.dtos.HumansPeopleAndAvMass;
+import com.avila.gapiforcapco.dtos.Person;
+import com.avila.gapiforcapco.dtos.ResourcesPaths;
 import com.avila.gapiforcapco.services.SwapiConsumer;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +31,8 @@ public class ResourcesController {
         return swapiConsumerservice.getAllCharacters();
     }
 
+    @GetMapping(value = "/avmasshumans")
+    public HumansPeopleAndAvMass getAverageMassOfHumansCharacters() {
+        return swapiConsumerservice.getAverageMassOfHumansCharacters();
+    }
 }
