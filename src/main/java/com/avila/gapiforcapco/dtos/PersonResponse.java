@@ -7,7 +7,7 @@ public class PersonResponse {
     private String birth_year;
     private List<Film> films;
 
-    public PersonResponse(String name, String birth_year, List<Film> films) {
+    private PersonResponse(String name, String birth_year, List<Film> films) {
         this.name = name;
         this.birth_year = birth_year;
         this.films = films;
@@ -23,5 +23,9 @@ public class PersonResponse {
 
     public List<Film> getFilms() {
         return films;
+    }
+
+    public static PersonResponse transformIntoPersonResponse(Person person, List<Film> films) {
+        return new PersonResponse(person.getName(), person.getBirth_year(), films);
     }
 }

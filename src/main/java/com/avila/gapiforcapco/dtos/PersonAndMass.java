@@ -10,11 +10,6 @@ public class PersonAndMass {
     @JsonProperty("mass")
     private String mass;
 
-    public PersonAndMass(String name, String mass) {
-        this.name = name;
-        this.mass = mass;
-    }
-
     public String getName() {
         return name;
     }
