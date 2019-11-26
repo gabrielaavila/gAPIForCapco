@@ -18,4 +18,5 @@ public class HumansPeopleAndAvMass {
     public String getAverageMass() {
         return averageMass;
     }
+
 }

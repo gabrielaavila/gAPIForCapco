@@ -1,14 +1,13 @@
 package com.avila.gapiforcapco.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class PersonAndMass {
-    @JsonProperty("name")
     private String name;
-    @JsonProperty("mass")
     private String mass;
+
+    private PersonAndMass(String name, String mass) {
+        this.name = name;
+        this.mass = mass;
+    }
 
     public String getName() {
         return name;
@@ -16,5 +15,9 @@ public class PersonAndMass {
 
     public String getMass() {
         return mass;
+    }
+
+    public static PersonAndMass transformIntoPersonAndMass(Person person) {
+        return new PersonAndMass(person.getName(), person.getMass());
     }
 }

@@ -3,7 +3,7 @@ package com.avila.gapiforcapco.dtos;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
@@ -15,7 +15,7 @@ public class Person {
     @JsonProperty("mass")
     private String mass;
     @JsonProperty("films")
-    private ArrayList<String> films;
+    private List<String> films;
     //private String url;
 
 
@@ -31,7 +31,7 @@ public class Person {
         return mass;
     }
 
-    public ArrayList<String> getFilms() {
+    public List<String> getFilms() {
         return films;
     }
 }
