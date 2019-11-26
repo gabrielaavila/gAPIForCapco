@@ -3,7 +3,6 @@ package com.avila.gapiforcapco.services;
 import com.avila.gapiforcapco.dtos.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class CharactersServiceTest {
-    private final SwapiConsumer swapiConsumerService = mock(SwapiConsumerService.class);
-    private final CharactersService charactersService = new CharactersService(swapiConsumerService);
+class CharactersServiceImplTest {
+    private final SwapiConsumerService swapiConsumerService = mock(SwapiConsumerService.class);
+    private final CharactersServiceImpl charactersService = new CharactersServiceImpl(swapiConsumerService);
 
     @Test
     public void given_CorrectId_When_getCharacterById_Then_ReturnCorrectDTOObject() {
@@ -166,8 +165,5 @@ class CharactersServiceTest {
         assertEquals("person1", result.getPeople().get(0).getName());
         assertEquals("person2", result.getPeople().get(1).getName());
         assertEquals("person3", result.getPeople().get(2).getName());
-
     }
-
-
 }
