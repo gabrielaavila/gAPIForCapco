@@ -7,7 +7,10 @@ import com.avila.gapiforcapco.dtos.PersonWithFilmsQty;
 import java.util.List;
 
 public interface CharactersService {
+
     List<PersonWithFilmsQty> getAllCharactersOrderedByNumberOfFilms();
+
     PersonResponse getCharacterById(Integer id);
+
     HumansPeopleAndAvMass getAverageMassOfHumansCharacters(String specieName);
 }

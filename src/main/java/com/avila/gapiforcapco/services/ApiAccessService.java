@@ -1,10 +1,16 @@
 package com.avila.gapiforcapco.services;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.web.client.RestTemplate;
+import com.avila.gapiforcapco.dtos.*;
 
 public interface ApiAccessService {
-    RestTemplate getRestTemplate();
-    HttpEntity<String> getEntity();
 
+    ResultsPaged<Person> getPeoplePage(String pageUrl);
+
+    Film getFilmByUrl(String filmUrl);
+
+    Person getPersonByUrl(String url);
+
+    ResultsPaged<Specie> getSpeciesPaged(String url);
+
+    ResourcesPaths getPaths();
 }

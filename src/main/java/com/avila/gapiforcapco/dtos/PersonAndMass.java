@@ -1,5 +1,8 @@
 package com.avila.gapiforcapco.dtos;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "Response DTO Person with name and mass information.")
 public class PersonAndMass {
     private String name;
     private String mass;
@@ -11,10 +14,6 @@ public class PersonAndMass {
 
     public String getName() {
         return name;
-    }
-
-    public String getMass() {
-        return mass;
     }
 
     public static PersonAndMass transformIntoPersonAndMass(Person person) {

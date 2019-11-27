@@ -1,7 +1,10 @@
 package com.avila.gapiforcapco.dtos;
 
+import io.swagger.annotations.ApiModel;
+
 import java.util.List;
 
+@ApiModel(description = "Response DTO Person with name and number of films performed.")
 public class PersonWithFilmsQty implements Comparable<PersonWithFilmsQty> {
 
     private String name;

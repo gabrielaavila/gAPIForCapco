@@ -1,9 +1,11 @@
 package com.avila.gapiforcapco.services;
 
-import com.avila.gapiforcapco.dtos.*;
+import com.avila.gapiforcapco.dtos.Film;
+import com.avila.gapiforcapco.dtos.Person;
+import com.avila.gapiforcapco.dtos.ResultsPaged;
+import com.avila.gapiforcapco.dtos.Specie;
+import com.avila.gapiforcapco.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,105 +14,76 @@ import java.util.stream.Collectors;
 
 @Service
 public class SwapiConsumerServiceImpl implements SwapiConsumerService {
-    private static final String MAIN_URL = "https://swapi.co/api/";
-    private final ResourcesPaths paths;
     private final ApiAccessService apiAccessService;
 
     @Autowired
     SwapiConsumerServiceImpl(ApiAccessService apiAccessService) {
         this.apiAccessService = apiAccessService;
-        this.paths = getAllPaths();
     }
 
     @Override
     public List<Person> getAllCharacters() {
         List<Person> allCharacters = new ArrayList<>();
-        String page = paths.getPeople();
+        String peoplePath = apiAccessService.getPaths().getPeople();
         ResultsPaged<Person> people;
-
         while (true) {
-            people = getPeoplePage(page);
+            people = apiAccessService.getPeoplePage(peoplePath);
+            if (people == null)
+                throw new ResourceNotFoundException("People not found.");
+
             allCharacters.addAll(people.getResults());
 
             if (!people.hasNext()) {
                 return allCharacters;
             }
-
-            page = people.getNext();
+            peoplePath = people.getNext();
         }
-
     }
 
     @Override
     public Person getPersonById(Integer id) {
-        String url = paths.getPeople() + id;
-        return getPersonByUrl(url);
+        if (id == null)
+            throw new IllegalArgumentException("Id parameter must not be null");
+
+        String url = apiAccessService.getPaths().getPeople() + id;
+        return apiAccessService.getPersonByUrl(url);
     }
 
     @Override
     public List<Film> getListOfFilmsByUrl(List<String> filmUrls) {
+        if (filmUrls == null)
+            throw new IllegalArgumentException("List of url films must not be null");
+
         return filmUrls.stream()
-                .map(this::getFilmByUrl)
+                .map(apiAccessService::getFilmByUrl)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Specie getSpecieByName(String name) {
-        String url = paths.getSpecies().substring(0, paths.getSpecies().length() - 1) + "?search=" + name;
-        ParameterizedTypeReference<ResultsPaged<Specie>> pagedParameterizedTypeReference =
-                new ParameterizedTypeReference<ResultsPaged<Specie>>() {};
+        if (name == null || name.isEmpty())
+            throw new IllegalArgumentException("Specie name must not be null or empty.");
 
-        ResultsPaged<Specie> resultsPaged = apiAccessService.getRestTemplate()
-                .exchange(url, HttpMethod.GET, apiAccessService.getEntity(), pagedParameterizedTypeReference)
-                .getBody();
+        String speciesPath = apiAccessService.getPaths().getSpecies();
+        String url = speciesPath.substring(0, speciesPath.length() - 1) + "?search=" + name;
 
-        if (resultsPaged == null)
-            return null; //todo exception handle
-        else if (resultsPaged.getResults().isEmpty()) {
-            return null; //todo exception handle
+        ResultsPaged<Specie> resultsPaged = apiAccessService.getSpeciesPaged(url);
+
+
+        if (resultsPaged.getResults().isEmpty()) {
+            throw new ResourceNotFoundException("Specie with url "+ url + " not found.");
         }
         return resultsPaged.getResults().get(0);
     }
 
     @Override
     public List<Person> getPeopleByUrl(List<String> peopleUrls) {
-        List<Person> people = new ArrayList<>();
-        Person person;
+        if (peopleUrls == null)
+            throw new IllegalArgumentException("List of people url must not be null");
 
-        for (String url : peopleUrls) {
-            person = getPersonByUrl(url);
-            people.add(person);
-        }
-
-        return people;
-    }
-
-    private ResourcesPaths getAllPaths(){
-        return apiAccessService.getRestTemplate()
-                .exchange(MAIN_URL, HttpMethod.GET, apiAccessService.getEntity(), ResourcesPaths.class)
-                .getBody();
-    }
-
-    private ResultsPaged<Person> getPeoplePage(String pageUrl){
-
-        ParameterizedTypeReference<ResultsPaged<Person>> pagedParameterizedTypeReference =
-                new ParameterizedTypeReference<ResultsPaged<Person>>() {};
-
-        return apiAccessService.getRestTemplate()
-                .exchange(pageUrl, HttpMethod.GET, apiAccessService.getEntity(), pagedParameterizedTypeReference)
-                .getBody();
-    }
-
-    private Film getFilmByUrl(String filmUrl) {
-        return apiAccessService.getRestTemplate()
-                .exchange(filmUrl, HttpMethod.GET, apiAccessService.getEntity(), Film.class)
-                .getBody();
-    }
-
-    private Person getPersonByUrl(String url) {
-        return apiAccessService.getRestTemplate()
-                .exchange(url, HttpMethod.GET, apiAccessService.getEntity(), Person.class)
-                .getBody();
+        return peopleUrls.stream()
+                .map(apiAccessService::getPersonByUrl)
+                .collect(Collectors.toList());
     }
 
 }

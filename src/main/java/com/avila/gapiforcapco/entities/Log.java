@@ -1,8 +1,7 @@
 package com.avila.gapiforcapco.entities;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity(name = "Log")
 public class Log {
@@ -17,13 +16,12 @@ public class Log {
     private String controllerName;
 
     @Column(name = "requisitionDate")
-    @Temporal(TemporalType.DATE)
-    private Date requisitionDate;
+    private LocalDateTime requisitionDate;
 
     public Log() {
     }
 
-    public Log(String endpointPath, String controllerName, Date requisitionDate) {
+    public Log(String endpointPath, String controllerName, LocalDateTime requisitionDate) {
         this.endpointPath = endpointPath;
         this.controllerName = controllerName;
         this.requisitionDate = requisitionDate;
@@ -37,7 +35,7 @@ public class Log {
         return controllerName;
     }
 
-    public Date getRequisitionDate() {
+    public LocalDateTime getRequisitionDate() {
         return requisitionDate;
     }
 }

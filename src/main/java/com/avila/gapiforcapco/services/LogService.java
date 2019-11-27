@@ -7,6 +7,7 @@ import java.util.List;
 public interface LogService {
 
     List<LogResponse> fetchAllLogsUntilNow();
+
     void saveLog(String endpointPath, String controllerName);
 
 }

@@ -1,8 +1,10 @@
 package com.avila.gapiforcapco.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ApiModel(description = "Request DTO with all resource paths available in the SWAPI.")
 public class ResourcesPaths {
     private String films;
     private String people;
@@ -11,27 +13,12 @@ public class ResourcesPaths {
     private String starships;
     private String vehicles;
 
-    public String getFilms() {
-        return films;
-    }
-
     public String getPeople() {
         return people;
-    }
-
-    public String getPlanets() {
-        return planets;
     }
 
     public String getSpecies() {
         return species;
     }
 
-    public String getStarships() {
-        return starships;
-    }
-
-    public String getVehicles() {
-        return vehicles;
-    }
 }

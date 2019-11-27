@@ -6,7 +6,7 @@ import com.avila.gapiforcapco.repositories.LogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +28,6 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public void saveLog(String endpointPath, String controllerName) {
-        repository.save(new Log(endpointPath, controllerName, new Date()));
+        repository.save(new Log(endpointPath, controllerName, LocalDateTime.now()));
     }
 }

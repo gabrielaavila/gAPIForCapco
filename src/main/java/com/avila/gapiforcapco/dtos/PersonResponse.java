@@ -1,7 +1,10 @@
 package com.avila.gapiforcapco.dtos;
 
+import io.swagger.annotations.ApiModel;
+
 import java.util.List;
 
+@ApiModel(description = "Response DTO Person with name, birth year and list of films it performed.")
 public class PersonResponse {
     private String name;
     private String birth_year;

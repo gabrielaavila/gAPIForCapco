@@ -2,10 +2,13 @@ package com.avila.gapiforcapco.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ApiModel(description = "Request DTO Person with name, birth year, mass information and list of url resources " +
+        "of the movies it performed.")
 public class Person {
 
     @JsonProperty("name")
